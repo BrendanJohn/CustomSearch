@@ -1,4 +1,3 @@
 CustomSearch
 ============
-
-Custom Search of a database with PHP
+Trying to implement a custom search for an additional table in my WordPress database. Coding in PHP with some success so far.
