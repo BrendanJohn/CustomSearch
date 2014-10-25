@@ -16,12 +16,14 @@
 			<hr />
 			<?php
 
+			require_once('mysqli_connect.php');
+
+
 				$k = $_GET['k'];
 				$terms = explode(" ", $k);
 				$query = "SELECT * FROM search WHERE ";
 
 				foreach ($terms as $each) {
-					$i = 0;
 					$i++;
 					if ($i ==1)
 						$query.= "keywords LIKE '%$each%' ";
@@ -29,15 +31,12 @@
 						$query.= "OR keywords LIKE '%$each%' ";
 				}
 
-			// connect
-				mysql_connect("localhost", "root", "");
-				mysql_select_db("wordpress_db");
 
-			$query = mysql_query($query);
-			$numrows = mysql_num_rows($query);
+			$response = mysqli_query($dbc, $query);
+			$numrows = mysqli_num_rows($response);
 			if ($numrows > 0) {
 
-				while ($row = mysql_fetch_assoc($query)) {
+				while ($row = mysqli_fetch_assoc($response)) {
 					$id = $row['id'];
 					$title = $row['title'];
 					$description = $row['description'];
@@ -52,9 +51,6 @@
 			else
 				echo "No results found for \"<b>$k</b>\"";
 
-
-			// disconnect
-				mysql_close();
 
 			?>
 
