@@ -3,56 +3,40 @@
 <head>
 	<meta name="viewport" content="width=device-width" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Search Brendan</title>
+	<title>Search</title>
 	<link rel="stylesheet" href="wp-admin/css/install.css?ver=20100228" type="text/css" />
 </head>
 <body>
+	<center>
+		
+			
+<hr>
 
-		<h2>Search Engine<h2>
-			<form action='./search.php' method='get'>
-				<input type='text' name='k' size='50' value='<?php echo $_GET['k']; ?>' />
-				<input type='submit' value='Search'>
-			</form>
-			<hr />
-			<?php
+<?php
+@mysql_connect("localhost","m0262157701558","i,hZ3pcOK");
+mysql_select_db("m0262157701558");
 
-			require_once('mysqli_connect.php');
+if(isset($_GET['search'])){
+	
+	$search_value = $_GET['value'];
 
+	$query = "select * from wp_kjspcz4tfq_cf7dbplugin_submits where field_value like '%$search_value%'";
 
-				$k = $_GET['k'];
-				$terms = explode(" ", $k);
-				$query = "SELECT * FROM search WHERE ";
+	$run = mysql_query($query);
 
-				foreach ($terms as $each) {
-					$i++;
-					if ($i ==1)
-						$query.= "keywords LIKE '%$each%' ";
-					else
-						$query.= "OR keywords LIKE '%$each%' ";
-				}
+	while ($row=mysql_fetch_array($run)){
 
+		$title = $row['field_value'];
+		$link = $row['field_value'];
 
-			$response = mysqli_query($dbc, $query);
-			$numrows = mysqli_num_rows($response);
-			if ($numrows > 0) {
+		echo "<h1>$title</h1><a href='/ratings'>$link</a>";
 
-				while ($row = mysqli_fetch_assoc($response)) {
-					$id = $row['id'];
-					$title = $row['title'];
-					$description = $row['description'];
-					$keywords = $row['keywords'];
-					$link = $row['link'];
-
-					echo "<h2><a href='$link'>$title</a></h2>
-					$description<br /><br />";
-				}
-
-			}
-			else
-				echo "No results found for \"<b>$k</b>\"";
+	}
 
 
-			?>
+}
 
+?>
+	</center>
 </body>
 </html>
